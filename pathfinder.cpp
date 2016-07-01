@@ -33,7 +33,7 @@ std::vector< Node* > PathFinder::findPath()
    *On réitère avec ce noeud comme noeud courant jusqu'à ce que le noeud courant soit le noeud de destination.
    */
   Node* current= m_nodeDepart;
-  
+
   addListeFremee( current);
   addListeOuverte( current);
 }
@@ -57,7 +57,7 @@ void PathFinder::addListeOuverte(Node* centerNode)
   int x= tmpPos.first;
   int y= tmpPos.second;
   /*Pour chaque node en x adjacents*/
-  for(int i= x-1; i <= x+1; i++)
+  for(int i= x-1; i <= x+1; i++);
     //Si en dehors de la map on arrete
   /*Pour chaque node en y adjacents*/
 }
@@ -74,9 +74,9 @@ bool PathFinder::inListeOuverte(Node* node)
   std::vector<Node*>::iterator it = std::find( m_listeOuverte.begin(), m_listeOuverte.end(), node);
   if( it == m_listeOuverte.end())
     return false;
-  
+
   return true;
-  
+
 }
 
 bool PathFinder::inListeFermee(Node* node)
@@ -84,9 +84,9 @@ bool PathFinder::inListeFermee(Node* node)
   std::vector<Node*>::iterator it = std::find( m_listeFermee.begin(), m_listeFermee.end(), node);
   if( it == m_listeFermee.end())
     return false;
-  
+
   return true;
-  
+
 }
 
 void PathFinder::updateListeOuverte(Node* node, Node* tmp)
@@ -94,7 +94,7 @@ void PathFinder::updateListeOuverte(Node* node, Node* tmp)
   std::vector<Node*>::iterator it = std::find( m_listeFermee.begin(), m_listeFermee.end(), node);
   if((*it)->getF() < tmp->getF())
       (*it)= tmp;
-  
+
 }
 
 float PathFinder::distanceNoeud(Node* nodeDepart, Node* nodeArrive)
@@ -105,7 +105,7 @@ float PathFinder::distanceNoeud(Node* nodeDepart, Node* nodeArrive)
   int y2= nodeArrive->getPosition().second;
    /* distance euclidienne */
     return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
- 
+
     /* carré de la distance euclidienne */
     /* return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2); */
 }
@@ -115,13 +115,13 @@ Node* PathFinder::getBestNodeListeOuverte()
 {
   Node* tmp= 0;
   std::vector<Node*>::iterator it= m_listeOuverte.begin();
-  
-  for(it = m_listeOuverte.begin(); it!= m_listeOuverte.end(); it++) 
+
+  for(it = m_listeOuverte.begin(); it!= m_listeOuverte.end(); it++)
   {
     if(tmp->getF() < (*it)->getF())
       tmp = (*it);
   }
-    
+
   return tmp;
 
 }
