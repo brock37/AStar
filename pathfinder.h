@@ -16,8 +16,9 @@ PathFinder(Graph* graph, Node* depart, Node* arrive);
 PathFinder(const PathFinder& other);
 ~PathFinder();
 
-void addListeOuverte( Node* centerNode);// a revoir pour verifier les case adjacentes dans la fonction
+void addListeOuverte( Node* node);// a revoir pour verifier les case adjacentes dans la fonction
 void addListeFremee(Node* node);//
+void addAdjacentNodeListeOuverte( Node* centerNode);
 
 void removeListeOuverte(Node* node);//
 void removeListeFermee(Node* node);//

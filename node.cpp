@@ -1,6 +1,6 @@
 #include "node.h"
 
-Node::Node(int line, int col, char c)
+Node::Node(int line, int col, char c= 'a')
 {
   m_char= c;
   m_F= m_G = m_H = 0;

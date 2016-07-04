@@ -20,6 +20,7 @@ void setwalkable(bool walk){m_walkable= walk;};
 void setPosition(std::pair<int, int> pos){ m_position=pos;};
 void setparent(Node* parent){m_parent= parent;};
 
+
 char getChar(){return m_char;};
 int getG(){return m_G;};
 int getH(){return m_H;};
@@ -29,6 +30,7 @@ int getLigne(){return m_ligne;};
 bool getWalkable(){return m_walkable;};
 std::pair<int , int> getPosition(){return m_position;};
 Node* getParent(){return m_parent;};
+Node* getAdresse(){return this;};
 
 
 private:
