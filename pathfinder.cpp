@@ -37,11 +37,9 @@ std::vector< Node* > PathFinder::findPath()
   std::cout << "Depart:  " << m_nodeDepart->getChar() << " Arrive " << m_nodeArrive->getChar() << std::endl;
   std::vector<Node*> road;
   Node* current= m_nodeDepart;
-<<<<<<< HEAD
-=======
+
 
   addListeFremee( current);
->>>>>>> 3664475d9867f64fe503bf4ef81f17cc7f81de48
   addListeOuverte( current);
   addListeFremee( current);
   //removeListeOuverte(current);
@@ -164,18 +162,17 @@ void PathFinder::removeListeFermee(Node* node)
 
 void PathFinder::addListeOuverte(Node* node)
 {
-<<<<<<< HEAD
+
   m_listeOuverte.push_back( node);
   std::cout << "Node ajouter a la liste ouverte "<< node->getChar() << "," << node->getAdresse() << std::endl;
-=======
-  std::pair<int, int> tmpPos= centerNode->getPosition();
+
+  std::pair<int, int> tmpPos= node->getPosition();
   int x= tmpPos.first;
   int y= tmpPos.second;
   /*Pour chaque node en x adjacents*/
   for(int i= x-1; i <= x+1; i++);
     //Si en dehors de la map on arrete
   /*Pour chaque node en y adjacents*/
->>>>>>> 3664475d9867f64fe503bf4ef81f17cc7f81de48
 }
 
 
@@ -222,30 +219,25 @@ float PathFinder::distanceNoeud(Node* nodeDepart, Node* nodeArrive)
   int y2= nodeArrive->getPosition().second;
    /* distance euclidienne */
     return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-<<<<<<< HEAD
+
  
     /* carré de la distance euclidienne pour int */
-=======
+
 
     /* carré de la distance euclidienne */
->>>>>>> 3664475d9867f64fe503bf4ef81f17cc7f81de48
+
     /* return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2); */
 }
 
 
 Node* PathFinder::getBestNodeListeOuverte()
 {
-<<<<<<< HEAD
+
   Node* tmp= m_listeOuverte[0];
   std::vector<Node*>::iterator it;
-  
-  for(it = m_listeOuverte.begin(); it!= m_listeOuverte.end(); it++) 
-=======
-  Node* tmp= 0;
-  std::vector<Node*>::iterator it= m_listeOuverte.begin();
+
 
   for(it = m_listeOuverte.begin(); it!= m_listeOuverte.end(); it++)
->>>>>>> 3664475d9867f64fe503bf4ef81f17cc7f81de48
   {
     std::cout << "Comparaison cout node" << "\t";
     std::cout<< "cout F tmp: "<< tmp->getChar() << "," << tmp->getF();
