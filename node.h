@@ -10,10 +10,10 @@ Node(const Node& other);
 ~Node();
 Node& operator=(Node const& other);
 
-void setChar(int c){m_char= c;};
-void setG(int g){m_G=g;};//Cout du point de depart a la node
-void setH(int h){m_H=h;};//Cout de la node au point darrive
-void setF(int f){m_F=f;};//Somme des deux valeur g et h
+void setChar(char c){m_char= c;};
+void setG(float g){m_G=g;};//Cout du point de depart a la node
+void setH(float h){m_H=h;};//Cout de la node au point darrive
+void setF(float f){m_F=f;};//Somme des deux valeur g et h
 void setcolonne(int col){m_colonne= col;};
 void setligne(int li){m_ligne= li;};
 void setwalkable(bool walk){m_walkable= walk;};
@@ -22,9 +22,9 @@ void setparent(Node* parent){m_parent= parent;};
 
 
 char getChar(){return m_char;};
-int getG(){return m_G;};
-int getH(){return m_H;};
-int getF(){return m_F;};
+float getG(){return m_G;};
+float getH(){return m_H;};
+float getF(){return m_F;};
 int getColonne(){return m_colonne;};
 int getLigne(){return m_ligne;};
 bool getWalkable(){return m_walkable;};
@@ -35,9 +35,9 @@ Node* getAdresse(){return this;};
 
 private:
   char m_char;
-  int m_G;//il s'agit de la distance parcourue depuis le point de départ pour arriver au node courant.
-  int m_H;// il s'agit de la distance à vol d'oiseau entre le node courant et le node d'arrivée.
-  int m_F;//Somme de H et G
+  float m_G;//il s'agit de la distance parcourue depuis le point de départ pour arriver au node courant.
+  float m_H;// il s'agit de la distance à vol d'oiseau entre le node courant et le node d'arrivée.
+  float m_F;//Somme de H et G
   int m_colonne;
   int m_ligne;
   bool m_walkable;

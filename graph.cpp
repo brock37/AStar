@@ -49,7 +49,7 @@ void Graph::afficherGraph()
 Node* Graph::findNode(int x, int j)
 {
   Node* tmp= m_graph.at(x * m_nombreLigne + j);
-  std::cout << "Node trouvé ardesse: " << tmp << std::endl;
+  //std::cout << "Node trouvé ardesse: " << tmp << std::endl;
   return tmp;
 }
 

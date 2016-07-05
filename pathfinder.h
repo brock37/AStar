@@ -31,6 +31,7 @@ Node* getBestNodeListeOuverte();//
 float distanceNoeud( Node* nodeDepart,  Node* nodeArrive);//
 
 std::vector<Node*> findPath(); 
+void retouverChemin();
 
 
 private:
