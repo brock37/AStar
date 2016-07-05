@@ -14,11 +14,7 @@ Graph::Graph(const Graph& other)
 
 Graph::~Graph()
 {
-  for(int i=0; i <m_graph.size(); i++)
-  {
-    std::cout << "Remove Pointer Ardess: "<<m_graph[i]->getChar() << "," << m_graph[i] << std::endl;
-    delete m_graph[i];
-  }
+
 }
 
 void Graph::initGraph()
@@ -28,7 +24,8 @@ void Graph::initGraph()
   {
     for(int j=0; j < m_nombreColonne; j++)
     {
-      m_graph.push_back(new Node(i,j, c));
+      m_graph[std::pair<int, int>(i,j)]= new Node(i,j,c);
+      std::cout <<  m_graph[std::pair<int, int>(i,j)]->getChar() << "," <<  m_graph[std::pair<int, int>(i,j)]->getAdresse() << std::endl;
       c++;
     }
   }
@@ -40,7 +37,7 @@ void Graph::afficherGraph()
   {
     for(int j=0; j < m_nombreColonne; j++)
     {
-      std::cout << m_graph[i* m_nombreLigne+j]->getChar();
+      std::cout << m_graph[std::pair<int, int>(i,j)]->getChar();
     }
     std::cout << std::endl;
   }
@@ -48,9 +45,16 @@ void Graph::afficherGraph()
 
 Node* Graph::findNode(int x, int j)
 {
-  Node* tmp= m_graph.at(x * m_nombreLigne + j);
+  std::pair <int, int> findpos(x,j);
+  std::map< std::pair<int,int> , Node*>::iterator it;
+  for(it= m_graph.begin(); it != m_graph.end(); it++)
+  {
+    if( findpos == it->first )
+    return it->second;
+  }
+  /*Node* tmp= m_graph.at(x * m_nombreLigne + j);
   //std::cout << "Node trouvé ardesse: " << tmp << std::endl;
-  return tmp;
+  return tmp;*/
 }
 
 

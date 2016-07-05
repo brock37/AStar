@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <map>
+#include <utility>
 #include "node.h"
 
 class Graph
@@ -20,7 +22,8 @@ int getNombreColonne(){ return m_nombreColonne;};
 Node* findNode(int x, int j);
 
 private:
-  std::vector<Node*> m_graph;
+  //std::vector<Node*> m_graph;
+  std::map< std::pair<int, int>, Node*> m_graph;
   int m_nombreLigne;
   int m_nombreColonne;
 };

@@ -10,8 +10,7 @@ int main(int argc, char **argv) {
     graph.initGraph();
     graph.afficherGraph();
     
-    PathFinder pathfinder(&graph, graph.findNode(0,0), graph.findNode(2,4));
-    std::vector<Node*> chemin =pathfinder.findPath();
-    //std::cout << pathfinder.distanceNoeud(graph.findNode(0,0), graph.findNode(4,4)) << std::endl;;
+    std::cout << graph.findNode(1,1)->getChar() << "," << graph.findNode(1,1) << std::endl;
+   
     return 0;
 }
