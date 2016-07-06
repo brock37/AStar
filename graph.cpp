@@ -1,9 +1,9 @@
 #include "graph.h"
 
-Graph::Graph(int l, int c)
+Graph::Graph(int hauteur, int largeur)
 {
-  m_nombreLigne= l;
-  m_nombreColonne= c;
+  m_nombreLigne= hauteur;
+  m_nombreColonne= largeur;
   
 }
 
@@ -52,9 +52,6 @@ Node* Graph::findNode(int x, int j)
     if( findpos == it->first )
     return it->second;
   }
-  /*Node* tmp= m_graph.at(x * m_nombreLigne + j);
-  //std::cout << "Node trouvé ardesse: " << tmp << std::endl;
-  return tmp;*/
 }
 
 

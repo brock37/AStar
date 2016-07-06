@@ -11,7 +11,7 @@
 class Graph
 {
 public:
-Graph(int l, int c);
+Graph(int hauteur, int largeur);
 Graph(const Graph& other);
 ~Graph();
 void initGraph();
