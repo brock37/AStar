@@ -19,6 +19,7 @@ void afficherGraph();
 
 int getNombreLigne(){ return m_nombreLigne;};
 int getNombreColonne(){ return m_nombreColonne;};
+std::pair<int,int> getNodePosition( int x, int y){ return m_graph[std::pair<int, int>(x,y)]->getPosition();};
 Node* findNode(int x, int j);
 
 private:

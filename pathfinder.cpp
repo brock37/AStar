@@ -1,6 +1,6 @@
 #include "pathfinder.h"
 
-PathFinder::PathFinder(Graph* graph, Node* depart, Node* arrive)
+PathFinder::PathFinder(Graph* graph, std::pair<int, int> depart, std::pair<int, int> arrive)
 {
   m_graph= graph;
   m_nodeDepart= depart;
@@ -20,7 +20,7 @@ PathFinder::~PathFinder()
 
 }
 
-std::vector< Node* > PathFinder::findPath()
+std::map< std::pair<int, int>, Node*> PathFinder::findPath()
 {
   /*
    *On commence par le noeud de départ, c'est le noeud courant
@@ -36,7 +36,7 @@ std::vector< Node* > PathFinder::findPath()
 
 }
 
-void PathFinder::addAdjacentNodeListeOuverte(Node* centerNode)
+void PathFinder::addAdjacentNodeListeOuverte(std::pair<int, int> centerNode)
 {
   
 }
@@ -46,47 +46,43 @@ void PathFinder::retouverChemin()
 
 }
 
-void PathFinder::removeListeOuverte(Node* node)
+void PathFinder::removeListeOuverte(std::pair<int, int> node)
 {
 }
 
-void PathFinder::removeListeFermee(Node* node)
-{
-
-}
 
 
-void PathFinder::addListeOuverte(Node* node)
+void PathFinder::addListeOuverte(std::pair<int, int> node)
 {
 
 }
 
-void PathFinder::addListeFremee(Node* node)
+void PathFinder::addListeFremee(std::pair<int, int> node)
 {
   
 }
 
-bool PathFinder::inListeOuverte(Node* node)
+bool PathFinder::inListeOuverte(std::pair<int, int> node)
 {
   
 }
 
-bool PathFinder::inListeFermee(Node* node)
+bool PathFinder::inListeFermee(std::pair<int, int> node)
 {
   
 }
 
-void PathFinder::updateListeOuverte(Node* node, Node* tmp)
+void PathFinder::updateListeOuverte(std::pair<int, int> node, std::pair<int, int> tmp)
 {
   
 }
 
-float PathFinder::distanceNoeud(Node* nodeDepart, Node* nodeArrive)
+float PathFinder::distanceNoeud(std::pair<int, int> nodeDepart, std::pair<int, int> nodeArrive)
 {
-  int x1= nodeDepart->getPosition().first;
-  int y1= nodeDepart->getPosition().second;
-  int x2= nodeArrive->getPosition().first;
-  int y2= nodeArrive->getPosition().second;
+  int x1= nodeDepart.first;
+  int y1= nodeDepart.second;
+  int x2= nodeArrive.first;
+  int y2= nodeArrive.second;
    /* distance euclidienne */
     return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 
@@ -100,12 +96,7 @@ float PathFinder::distanceNoeud(Node* nodeDepart, Node* nodeArrive)
 }
 
 
-Node* PathFinder::getBestNodeListeOuverte()
+std::pair<int, int> PathFinder::getBestNodeListeOuverte()
 {
   
 }
-
-
-
-
-
