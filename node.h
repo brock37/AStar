@@ -2,9 +2,11 @@
 #define NODE_H
 #include <utility>
 
+
 class Node
 {
 public:
+  Node();
 Node(int line, int col, char c);
 Node(const Node& other);
 ~Node();
@@ -16,7 +18,7 @@ void setH(float h){m_H=h;};//Cout de la node au point darrive
 void setF(float f){m_F=f;};//Somme des deux valeur g et h
 void setwalkable(bool walk){m_walkable= walk;};
 void setPosition(std::pair<int, int> pos){ m_position=pos;};
-void setparent(Node* parent){m_parent= parent;};
+void setparent(std::pair<int , int> parent){m_parent= parent;};
 
 
 char getChar(){return m_char;};
@@ -25,7 +27,7 @@ float getH(){return m_H;};
 float getF(){return m_F;};
 bool getWalkable(){return m_walkable;};
 std::pair<int , int> getPosition(){return m_position;};
-Node* getParent(){return m_parent;};
+std::pair<int, int> getParent(){return m_parent;};
 Node* getAdresse(){return this;};
 
 
@@ -36,7 +38,7 @@ private:
   float m_F;//Somme de H et G
   bool m_walkable;
   std::pair<int , int> m_position;
-  Node* m_parent;
+  std::pair<int , int> m_parent;
 };
 
 #endif // NODE_H

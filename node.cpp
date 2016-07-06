@@ -1,12 +1,17 @@
 #include "node.h"
 
+Node::Node()
+{
+
+}
+
+
 Node::Node(int line, int col, char c= 'a')
 {
   m_char= c;
   m_F= m_G = m_H = 0;
   m_walkable= true;
   m_position= std::pair<int, int>( line, col); 
-  m_parent= 0;
 
 }
 

@@ -19,12 +19,12 @@ void afficherGraph();
 
 int getNombreLigne(){ return m_nombreLigne;};
 int getNombreColonne(){ return m_nombreColonne;};
-std::pair<int,int> getNodePosition( int x, int y){ return m_graph[std::pair<int, int>(x,y)]->getPosition();};
-Node* findNode(int x, int j);
+std::pair<int,int> getNodePosition( int x, int y){ return m_graph[std::pair<int, int>(x,y)].getPosition();};
+Node& findNode(int x, int j);
 
 private:
   //std::vector<Node*> m_graph;
-  std::map< std::pair<int, int>, Node*> m_graph;
+  std::map< std::pair<int, int>, Node> m_graph;
   int m_nombreLigne;
   int m_nombreColonne;
 };

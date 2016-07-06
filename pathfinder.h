@@ -19,7 +19,7 @@ PathFinder(const PathFinder& other);
 ~PathFinder();
 
 void addListeOuverte( std::pair<int, int> node);// a revoir pour verifier les case adjacentes dans la fonction
-void addListeFremee(std::pair<int, int> node);//
+void addListeFremee(std::pair<int, int>& node);//
 void addAdjacentNodeListeOuverte( std::pair<int, int> centerNode);
 
 void removeListeOuverte(std::pair<int, int> node);//

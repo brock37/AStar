@@ -48,6 +48,10 @@ void PathFinder::retouverChemin()
 
 void PathFinder::removeListeOuverte(std::pair<int, int> node)
 {
+  if(m_listeOuverte.erase( node) == 0)
+  {
+    std::cerr << "Erreur, le noeud n'apparait pas dans la liste ouverte, impossible à supprimer" << std::endl;
+  }
 }
 
 
@@ -57,7 +61,7 @@ void PathFinder::addListeOuverte(std::pair<int, int> node)
 
 }
 
-void PathFinder::addListeFremee(std::pair<int, int> node)
+void PathFinder::addListeFremee(std::pair<int, int>& node)
 {
   
 }
@@ -88,10 +92,6 @@ float PathFinder::distanceNoeud(std::pair<int, int> nodeDepart, std::pair<int, i
 
  
     /* carré de la distance euclidienne pour int */
-
-
-    /* carré de la distance euclidienne */
-
     /* return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2); */
 }
 
