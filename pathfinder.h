@@ -27,9 +27,10 @@ void removeListeOuverte(std::pair<int, int> node);//
 bool inListeFermee(std::pair<int, int> node);//
 bool inListeOuverte(std::pair<int, int> node);//
 
-void updateListeOuverte(std::pair<int, int>, std::pair<int, int> tmp);//
+void updateListeOuverte(std::pair<int, int> node, float tmp_F);//
 std::pair<int, int> getBestNodeListeOuverte();//
 float distanceNoeud( std::pair<int, int> nodeDepart,  std::pair<int, int> nodeArrive);//
+float distanceNoeud(int x1, int y1, int x2, int y2);
 
 std::map< std::pair<int, int>, Node> findPath();
 std::map< std::pair<int, int>, Node> retouverChemin();

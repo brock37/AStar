@@ -43,22 +43,43 @@ void PathFinder::addAdjacentNodeListeOuverte(std::pair<int, int> centerNode)
 {
     int x= centerNode.first;
     int y= centerNode.second;
+    Node tmp;
 
     for(int i=x-1 ; i <= x+1; i++)
     {
-        if( i < 0 || i > m_graph->getNombreLigne())
+        if( (i < 0) || (i > m_graph->getNombreLigne()))
             continue;
         for(int j=y-1 ; j <= y+1; j++)
         {
-            if( j < 0 || j > m_graph->getNombreColonne())
+            if( (j < 0) || (j > m_graph->getNombreColonne()))
                 continue;
-            if( i == x || j == y)
+            if( i == x && j == y)
                 continue;
             if(m_graph->findNode(i,j).getWalkable() == false)
                 continue;
 
-           Node tmpNode= m_graph->findNode(i,j);
-        }
+           std::pair<int, int> it(i,j);
+	   if(!inListeFermee( it))
+	   {
+	     tmp.setG( m_listeFermee[centerNode].getG() + distanceNoeud(i,j, centerNode.first, centerNode.second));
+	     tmp.setH( distanceNoeud(i,j, m_nodeArrive.first, m_nodeArrive.second));
+	     tmp.setF( tmp.getG() + tmp.getH());
+	     
+	     tmp.setparent( centerNode);
+	     tmp.setwalkable( m_graph->findNode(i,j).getWalkable());
+	     tmp.setChar( m_graph->findNode(i,j).getChar());
+	     
+	     if(inListeOuverte(it))
+	     {
+	       if(tmp.getF() < m_listeOuverte[it].getF())
+		 m_listeOuverte[it]= tmp;
+	     }
+	     else
+	     {
+		addListeOuverte(it);
+	     }
+	  }
+	}
     }
 }
 
@@ -104,9 +125,9 @@ bool PathFinder::inListeFermee(std::pair<int, int> node)
     return false;
 }
 
-void PathFinder::updateListeOuverte(std::pair<int, int> node, std::pair<int, int> tmp)
+float PathFinder::distanceNoeud(int x1, int y1, int x2, int y2)
 {
-
+  return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
 
 float PathFinder::distanceNoeud(std::pair<int, int> nodeDepart, std::pair<int, int> nodeArrive)

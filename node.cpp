@@ -2,7 +2,8 @@
 
 Node::Node()
 {
-
+    m_F= m_G = m_H = 0;
+    m_walkable= true;
 }
 
 

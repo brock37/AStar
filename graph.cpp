@@ -43,8 +43,8 @@ void Graph::afficherGraph()
   }
 }
 
-Node& Graph::findNode(int x, int j)
-{
+Node& Graph::findNode(int x, int y)
+{/*
   std::pair <int, int> findpos(x,j);
   std::map< std::pair<int,int> , Node>::iterator it;
   for(it= m_graph.begin(); it != m_graph.end(); it++)
@@ -52,7 +52,21 @@ Node& Graph::findNode(int x, int j)
     if( findpos == it->first )
     return it->second;
   }
+  */
+  Node& tmp= m_graph[std::pair<int, int>(x,y)];
+  return tmp;
+}
+
+std::pair< int, int > Graph::getNodePosition(int x, int y)
+{
+  std::pair <int, int> findpos(x,y);
+  std::map< std::pair<int, int> , Node>::iterator it;
   
+  for(it= m_graph.begin(); it != m_graph.end(); it++)
+  {
+    if( findpos == it->first )
+    return it->first;
+  }
 }
 
 
