@@ -5,6 +5,7 @@
 #include <cmath> //sqrt
 #include <map> //map
 #include<utility> //pair
+#include <list>
 #include <iostream> //cout
 #include "node.h"
 #include "graph.h"
@@ -27,13 +28,15 @@ void removeListeOuverte(std::pair<int, int> node);//
 bool inListeFermee(std::pair<int, int> node);//
 bool inListeOuverte(std::pair<int, int> node);//
 
-void updateListeOuverte(std::pair<int, int> node, float tmp_F);//
+void updateListeOuverte(std::pair<int, int> node, Node tmp_node);//
 std::pair<int, int> getBestNodeListeOuverte();//
 float distanceNoeud( std::pair<int, int> nodeDepart,  std::pair<int, int> nodeArrive);//
 float distanceNoeud(int x1, int y1, int x2, int y2);
 
-std::map< std::pair<int, int>, Node> findPath();
-std::map< std::pair<int, int>, Node> retouverChemin();
+std::list< std::pair<int, int> > findPath();
+std::list< std::pair<int, int> > retouverChemin();
+
+void listerNode(std::list< std::pair<int, int> > liste);
 
 
 private:

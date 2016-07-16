@@ -20,7 +20,9 @@ void afficherGraph();
 int getNombreLigne(){ return m_nombreLigne;};
 int getNombreColonne(){ return m_nombreColonne;};
 std::pair<int,int> getNodePosition( int x, int y);
+std::pair<int,int> getNodePosition( char c);
 Node& findNode(int x, int y);
+Node& findNode(std::pair<int, int> pos);
 
 private:
   //std::vector<Node*> m_graph;

@@ -20,7 +20,7 @@ PathFinder::~PathFinder()
 
 }
 
-std::map< std::pair<int, int>, Node> PathFinder::findPath()
+std::list< std::pair<int, int> > PathFinder::findPath()
 {
   /*
    *On commence par le noeud de départ, c'est le noeud courant
@@ -34,10 +34,24 @@ std::map< std::pair<int, int>, Node> PathFinder::findPath()
    *On réitère avec ce noeud comme noeud courant jusqu'à ce que le noeud courant soit le noeud de destination.
    */
    std::pair<int, int> current= m_nodeDepart;
+   addListeOuverte(current);
    addListeFermee( current);
+   addAdjacentNodeListeOuverte( current);
+   
+   while( !((current.first == m_nodeArrive.first) && (current.second == m_nodeArrive.second)) && (!m_listeOuverte.empty()) )
+   {
+     current= getBestNodeListeOuverte();
+     
+     addListeFermee( current);
+     
+     addAdjacentNodeListeOuverte(current);
+   }
 
-    return retouverChemin();
+  return retouverChemin();
+
 }
+
+
 
 void PathFinder::addAdjacentNodeListeOuverte(std::pair<int, int> centerNode)
 {
@@ -76,16 +90,40 @@ void PathFinder::addAdjacentNodeListeOuverte(std::pair<int, int> centerNode)
 	     }
 	     else
 	     {
-		addListeOuverte(it);
+	       //on ajoute la node la liste ouverte
+	       m_listeOuverte[std::pair<int, int>(i, j)]= tmp;
 	     }
 	  }
 	}
     }
 }
 
-std::map< std::pair<int, int>, Node> PathFinder::retouverChemin()
+std::list< std::pair<int, int> > PathFinder::retouverChemin()
 {
-    std::map< std::pair<int, int>, Node> chemin;
+    std::list< std::pair<int, int> > chemin;
+    
+    Node& tmp_node= m_listeFermee[m_nodeArrive];
+    
+    std::pair<int, int> node= m_graph->getNodePosition(tmp_node.getChar());
+    std::pair<int, int> prec(tmp_node.getParent());
+    
+    
+    chemin.push_back( m_nodeArrive);
+    
+    while( prec != m_nodeDepart)
+    {
+      node.first= prec.first;
+      node.second= prec.second;
+      
+      chemin.push_back( node);
+      
+      tmp_node= m_listeFermee[ tmp_node.getParent()];
+      prec= tmp_node.getParent();
+      
+    }
+    
+    
+    listerNode( chemin);
     return chemin;
 }
 
@@ -97,6 +135,13 @@ void PathFinder::removeListeOuverte(std::pair<int, int> node)
   }
 }
 
+void PathFinder::updateListeOuverte(std::pair< int, int > node, Node tmp_node)
+{
+  Node& update_node= m_graph->findNode( node.first, node.second);
+  update_node.setF( tmp_node.getF());
+  update_node.setG( tmp_node.getG());
+  update_node.setH( tmp_node.getH());
+}
 
 
 void PathFinder::addListeOuverte(std::pair<int, int> node)
@@ -106,8 +151,11 @@ void PathFinder::addListeOuverte(std::pair<int, int> node)
 
 void PathFinder::addListeFermee(std::pair<int, int> node)
 {
-    m_listeFermee[std::pair<int, int>(node)]= m_graph->findNode(node.first, node.second);
-    removeListeOuverte( node);
+    //m_listeFermee[std::pair<int, int>(node)]= m_graph->findNode(node.first, node.second);
+  Node& n=  m_listeOuverte[node];
+  m_listeFermee[node]= n;
+
+  removeListeOuverte( node);
 
 }
 
@@ -147,12 +195,12 @@ float PathFinder::distanceNoeud(std::pair<int, int> nodeDepart, std::pair<int, i
 
 std::pair<int, int> PathFinder::getBestNodeListeOuverte()
 {
-    float tmpCout_F=0;
-    std::pair<int, int> bestNode;
+    float tmpCout_F= m_listeOuverte.begin()->second.getF();
+    std::pair<int, int> bestNode(m_listeOuverte.begin()->first);
     std::map< std::pair<int,int> , Node>::iterator it;
     for(it = m_listeOuverte.begin(); it != m_listeOuverte.end(); it++)
     {
-        if(it->second.getF() > tmpCout_F)
+        if(it->second.getF() < tmpCout_F)
         {
             tmpCout_F= it->second.getF();
             bestNode= it->first;
@@ -160,3 +208,12 @@ std::pair<int, int> PathFinder::getBestNodeListeOuverte()
     }
     return bestNode;
 }
+
+void PathFinder::listerNode(std::list< std::pair< int, int > > liste)
+{
+  std::list< std::pair< int, int > >::iterator it;
+  for(it = liste.begin(); it!= liste.end(); it ++)
+    std::cout << m_graph->findNode(it->first, it->second).getChar()  << "," ;
+    //std::cout << it->first  << "," << it->second << std::endl;
+}
+
