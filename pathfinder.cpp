@@ -1,12 +1,11 @@
 #include "pathfinder.h"
 
-PathFinder::PathFinder(Graph* graph, Node* depart, Node* arrive)
+PathFinder::PathFinder(Graph* graph, std::pair<int, int> depart, std::pair<int, int> arrive)
 {
   m_graph= graph;
   m_nodeDepart= depart;
   m_nodeArrive= arrive;
-  m_listeFermee.reserve(25);
-  m_listeOuverte.reserve(25);
+
 }
 
 PathFinder::PathFinder(const PathFinder& other)
@@ -21,7 +20,7 @@ PathFinder::~PathFinder()
 
 }
 
-std::vector< Node* > PathFinder::findPath()
+std::list< std::pair<int, int> > PathFinder::findPath()
 {
   /*
    *On commence par le noeud de départ, c'est le noeud courant
@@ -34,227 +33,187 @@ std::vector< Node* > PathFinder::findPath()
    *On le met dans la liste fermée et on le retire de la liste ouverte
    *On réitère avec ce noeud comme noeud courant jusqu'à ce que le noeud courant soit le noeud de destination.
    */
-  std::cout << "Depart:  " << m_nodeDepart->getChar() << " Arrive " << m_nodeArrive->getChar() << std::endl;
-  std::vector<Node*> road;
-  Node* current= m_nodeDepart;
+   std::pair<int, int> current= m_nodeDepart;
+   addListeOuverte(current);
+   addListeFermee( current);
+   addAdjacentNodeListeOuverte( current);
+   
+   while( !((current.first == m_nodeArrive.first) && (current.second == m_nodeArrive.second)) && (!m_listeOuverte.empty()) )
+   {
+     current= getBestNodeListeOuverte();
+     
+     addListeFermee( current);
+     
+     addAdjacentNodeListeOuverte(current);
+   }
 
+  return retouverChemin();
 
-  addListeFremee( current);
-  addListeOuverte( current);
-  addListeFremee( current);
-  //removeListeOuverte(current);
-  
-  addAdjacentNodeListeOuverte( current);
-  
-  while( !m_listeOuverte.empty() && ( current != m_nodeArrive ))
-  {
-    std::cout << "Recherche de la meilleur node " << std::endl;
-    current= getBestNodeListeOuverte();
-    std::cout << "Node courant " << current->getChar() << ", " << current << std::endl;
-    addListeFremee(current);
-    //removeListeOuverte(current);
-    addAdjacentNodeListeOuverte( current);
-    
-  }
-  
-  if(current == m_nodeArrive)
-  {
-    std::cout << "Chemin trouve" << std::endl;
-  }
-  else
-  {
-     std::cout << "Chemin NON trouve" << std::endl;
-  }
-  
-  
-  
-  return road;
 }
 
-void PathFinder::addAdjacentNodeListeOuverte(Node* centerNode)
+
+
+void PathFinder::addAdjacentNodeListeOuverte(std::pair<int, int> centerNode)
 {
-  Node tmpNode(0,0,'a');
-  std::pair<int, int> tmpPos= centerNode->getPosition();
-  int x= tmpPos.first;
-  int y= tmpPos.second;
-  /*Pour chaque node en x adjacents*/
-  for(int i= x-1; i <= x+1; i++)
-  {
-    //Si en dehors du graph on arrete
-    if( i < 0  || i >= m_graph->getNombreLigne())
-      continue;
-    
-     for(int j= y-1; j <= y+1; j++)
-     {
-       //Si en dehors du graph on arrete
-      if( j < 0  || j >= m_graph->getNombreLigne())
-	continue;
-	//Si case courante on arrete
-      if( i == x && j == y)
-	continue;
-      //Si c'est un obstacle on arrete
-      if( m_graph->findNode(i,j)->getWalkable() == false)
-	continue;
-      
-      Node* nodeAdjacente= m_graph->findNode(i,j);
-      
-      if( !inListeFermee( nodeAdjacente))
-      {
-	float coutG= nodeAdjacente->getG() + distanceNoeud( m_nodeDepart, nodeAdjacente);
-	float coutH= distanceNoeud( nodeAdjacente, m_nodeArrive);
-	float coutF= coutG + coutH;
-	nodeAdjacente->setF( coutF);
-	nodeAdjacente->setG(coutG);
-	nodeAdjacente->setH(coutH);
-	/*tmpNode.setPosition(std::pair<int,int>(i,j));
-	tmpNode.setChar( nodeAdjacente->getChar());
-	tmpNode.setwalkable( nodeAdjacente->getWalkable());
-	tmpNode.setPosition( nodeAdjacente->getPosition());
-	//Calcul du cout G 
-	tmpNode.setG( m_nodeDepart->getG() + distanceNoeud( m_nodeDepart, nodeAdjacente));
-	//Calcul du cout H
-	tmpNode.setH(distanceNoeud( nodeAdjacente, m_nodeArrive) + m_nodeArrive->getH());
-	//Calcul du coup F= G+H
-	tmpNode.setF( tmpNode.getG() + tmpNode.getH());
-	tmpNode.setparent( centerNode);*/
-	if(inListeOuverte( nodeAdjacente))
-	{
-	  //Si deja present dans la liste ouverte on le met a jour 
-	  if( coutF < nodeAdjacente->getF())
-	  {
-	    nodeAdjacente->setparent( centerNode);
+    int x= centerNode.first;
+    int y= centerNode.second;
+    Node tmp;
+
+    for(int i=x-1 ; i <= x+1; i++)
+    {
+        if( (i < 0) || (i > m_graph->getNombreLigne()))
+            continue;
+        for(int j=y-1 ; j <= y+1; j++)
+        {
+            if( (j < 0) || (j > m_graph->getNombreColonne()))
+                continue;
+            if( i == x && j == y)
+                continue;
+            if(m_graph->findNode(i,j).getWalkable() == false)
+                continue;
+
+           std::pair<int, int> it(i,j);
+	   if(!inListeFermee( it))
+	   {
+	     tmp.setG( m_listeFermee[centerNode].getG() + distanceNoeud(i,j, centerNode.first, centerNode.second));
+	     tmp.setH( distanceNoeud(i,j, m_nodeArrive.first, m_nodeArrive.second));
+	     tmp.setF( tmp.getG() + tmp.getH());
+	     
+	     tmp.setparent( centerNode);
+	     tmp.setwalkable( m_graph->findNode(i,j).getWalkable());
+	     tmp.setChar( m_graph->findNode(i,j).getChar());
+	     
+	     if(inListeOuverte(it))
+	     {
+	       if(tmp.getF() < m_listeOuverte[it].getF())
+		 m_listeOuverte[it]= tmp;
+	     }
+	     else
+	     {
+	       //on ajoute la node la liste ouverte
+	       m_listeOuverte[std::pair<int, int>(i, j)]= tmp;
+	     }
 	  }
-	    
 	}
-	else//Sinon on l'ajoute a la liste ouverte
-	{
-	  addListeOuverte(nodeAdjacente);
-	  //addListeOuverte( m_graph->findNode( tmpNode.getPosition().first, tmpNode.getPosition().second));
-	}
-      }
-       
-     }
+    }
+}
+
+std::list< std::pair<int, int> > PathFinder::retouverChemin()
+{
+    std::list< std::pair<int, int> > chemin;
     
+    Node& tmp_node= m_listeFermee[m_nodeArrive];
+    
+    std::pair<int, int> node= m_graph->getNodePosition(tmp_node.getChar());
+    std::pair<int, int> prec(tmp_node.getParent());
+    
+    
+    chemin.push_back( m_nodeArrive);
+    
+    while( prec != m_nodeDepart)
+    {
+      node.first= prec.first;
+      node.second= prec.second;
+      
+      chemin.push_back( node);
+      
+      tmp_node= m_listeFermee[ tmp_node.getParent()];
+      prec= tmp_node.getParent();
+      
+    }
+    
+    
+    listerNode( chemin);
+    return chemin;
+}
+
+void PathFinder::removeListeOuverte(std::pair<int, int> node)
+{
+  if(m_listeOuverte.erase( node) == 0)
+  {
+    std::cerr << "Erreur, le noeud n'apparait pas dans la liste ouverte, impossible à supprimer" << std::endl;
   }
-    
 }
 
-void PathFinder::retouverChemin()
+void PathFinder::updateListeOuverte(std::pair< int, int > node, Node tmp_node)
 {
-
-}
-
-void PathFinder::removeListeOuverte(Node* node)
-{
-  std::vector<Node*>::iterator it = std::find( m_listeOuverte.begin(), m_listeOuverte.end(), node);
-  m_listeOuverte.erase( it);
-  std::cout << "Node supprimer a la liste ouverte " << (*it)->getChar() << "," << (*it)->getAdresse() << std::endl;
-}
-
-void PathFinder::removeListeFermee(Node* node)
-{
-    std::vector<Node*>::iterator it = std::find( m_listeFermee.begin(), m_listeFermee.end(), node);
-    m_listeFermee.erase( it);
-    std::cout << "Node supprimer a la liste fermee "<< (*it)->getChar() << "," << (*it)->getAdresse() << std::endl;
-  
+  Node& update_node= m_graph->findNode( node.first, node.second);
+  update_node.setF( tmp_node.getF());
+  update_node.setG( tmp_node.getG());
+  update_node.setH( tmp_node.getH());
 }
 
 
-void PathFinder::addListeOuverte(Node* node)
+void PathFinder::addListeOuverte(std::pair<int, int> node)
 {
-
-  m_listeOuverte.push_back( node);
-  std::cout << "Node ajouter a la liste ouverte "<< node->getChar() << "," << node->getAdresse() << std::endl;
-
-  std::pair<int, int> tmpPos= node->getPosition();
-  int x= tmpPos.first;
-  int y= tmpPos.second;
-  /*Pour chaque node en x adjacents*/
-  for(int i= x-1; i <= x+1; i++);
-    //Si en dehors de la map on arrete
-  /*Pour chaque node en y adjacents*/
+    m_listeOuverte[std::pair<int, int>(node)]= m_graph->findNode(node.first, node.second);
 }
 
-
-void PathFinder::addListeFremee(Node* node)
+void PathFinder::addListeFermee(std::pair<int, int> node)
 {
-  m_listeFermee.push_back( node);
-  std::cout << "Node ajouter a la liste fermée "<< node->getChar() << "," << node->getAdresse() << std::endl;
+    //m_listeFermee[std::pair<int, int>(node)]= m_graph->findNode(node.first, node.second);
+  Node& n=  m_listeOuverte[node];
+  m_listeFermee[node]= n;
+
   removeListeOuverte( node);
+
 }
 
-bool PathFinder::inListeOuverte(Node* node)
+bool PathFinder::inListeOuverte(std::pair<int, int> node)
 {
-  std::vector<Node*>::iterator it = std::find( m_listeOuverte.begin(), m_listeOuverte.end(), node);
-  if( it == m_listeOuverte.end())
+    if(m_listeOuverte.find( node) != m_listeOuverte.end())
+        return true;
     return false;
-
-  return true;
-
 }
 
-bool PathFinder::inListeFermee(Node* node)
+bool PathFinder::inListeFermee(std::pair<int, int> node)
 {
-  std::vector<Node*>::iterator it = std::find( m_listeFermee.begin(), m_listeFermee.end(), node);
-  if( it == m_listeFermee.end())
+    if(m_listeFermee.find( node) != m_listeFermee.end())
+        return true;
     return false;
-
-  return true;
-
 }
 
-void PathFinder::updateListeOuverte(Node* node, Node* tmp)
+float PathFinder::distanceNoeud(int x1, int y1, int x2, int y2)
 {
-  std::vector<Node*>::iterator it = std::find( m_listeFermee.begin(), m_listeFermee.end(), node);
-  if((*it)->getF() < tmp->getF())
-      (*it)= tmp;
-
+  return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
 
-float PathFinder::distanceNoeud(Node* nodeDepart, Node* nodeArrive)
+float PathFinder::distanceNoeud(std::pair<int, int> nodeDepart, std::pair<int, int> nodeArrive)
 {
-  int x1= nodeDepart->getPosition().first;
-  int y1= nodeDepart->getPosition().second;
-  int x2= nodeArrive->getPosition().first;
-  int y2= nodeArrive->getPosition().second;
+  int x1= nodeDepart.first;
+  int y1= nodeDepart.second;
+  int x2= nodeArrive.first;
+  int y2= nodeArrive.second;
    /* distance euclidienne */
     return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 
- 
+
     /* carré de la distance euclidienne pour int */
-
-
-    /* carré de la distance euclidienne */
-
     /* return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2); */
 }
 
 
-Node* PathFinder::getBestNodeListeOuverte()
+std::pair<int, int> PathFinder::getBestNodeListeOuverte()
 {
-
-  Node* tmp= m_listeOuverte[0];
-  std::vector<Node*>::iterator it;
-
-
-  for(it = m_listeOuverte.begin(); it!= m_listeOuverte.end(); it++)
-  {
-    std::cout << "Comparaison cout node" << "\t";
-    std::cout<< "cout F tmp: "<< tmp->getChar() << "," << tmp->getF();
-    std::cout << " || cout F it: " << (*it)->getChar() << "," << (*it)->getF() << std::endl; 
-    if(tmp->getF() > (*it)->getF())
+    float tmpCout_F= m_listeOuverte.begin()->second.getF();
+    std::pair<int, int> bestNode(m_listeOuverte.begin()->first);
+    std::map< std::pair<int,int> , Node>::iterator it;
+    for(it = m_listeOuverte.begin(); it != m_listeOuverte.end(); it++)
     {
-      tmp = (*it);
-      std::cout << "Meilleur Node trouvé " << tmp->getChar() << "," << tmp->getAdresse() << std::endl; 
+        if(it->second.getF() < tmpCout_F)
+        {
+            tmpCout_F= it->second.getF();
+            bestNode= it->first;
+        }
     }
-      
-  }
-
-  return tmp;
-
+    return bestNode;
 }
 
-
-
-
+void PathFinder::listerNode(std::list< std::pair< int, int > > liste)
+{
+  std::list< std::pair< int, int > >::iterator it;
+  for(it = liste.begin(); it!= liste.end(); it ++)
+    std::cout << m_graph->findNode(it->first, it->second).getChar()  << "," ;
+    //std::cout << it->first  << "," << it->second << std::endl;
+}
 

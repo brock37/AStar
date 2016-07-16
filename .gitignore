@@ -3,3 +3,4 @@ Astar.depend
 Astar.layout
 bin/Debug/Astar.exe
 *.o
+bin/Release/Astar.exe

@@ -4,14 +4,28 @@
 #include "node.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Init du graph" << std::endl;
+    std::pair<int, int > depart(0,0);
+    std::pair<int, int > arrive(0,2);
+    std::cout << "Init du graph" << std::endl;    
     
     Graph graph(5,5);
     graph.initGraph();
-    graph.afficherGraph();
     
-    PathFinder pathfinder(&graph, graph.findNode(0,0), graph.findNode(2,4));
-    std::vector<Node*> chemin =pathfinder.findPath();
-    //std::cout << pathfinder.distanceNoeud(graph.findNode(0,0), graph.findNode(4,4)) << std::endl;;
+    PathFinder path(&graph, depart, arrive);
+    
+    graph.findNode(1,1).setChar('X');
+    graph.findNode(1,1).setwalkable(false);
+    graph.findNode(2,1).setChar('X');
+    graph.findNode(2,1).setwalkable(false);
+    graph.findNode(3,1).setChar('X');
+    graph.findNode(3,1).setwalkable(false);
+    graph.findNode(0,1).setChar('X');
+    graph.findNode(0,1).setwalkable(false);
+    
+
+    graph.afficherGraph();
+    path.findPath();
+   
+   
     return 0;
 }

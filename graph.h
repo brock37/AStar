@@ -4,12 +4,14 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <map>
+#include <utility>
 #include "node.h"
 
 class Graph
 {
 public:
-Graph(int l, int c);
+Graph(int hauteur, int largeur);
 Graph(const Graph& other);
 ~Graph();
 void initGraph();
@@ -17,10 +19,14 @@ void afficherGraph();
 
 int getNombreLigne(){ return m_nombreLigne;};
 int getNombreColonne(){ return m_nombreColonne;};
-Node* findNode(int x, int j);
+std::pair<int,int> getNodePosition( int x, int y);
+std::pair<int,int> getNodePosition( char c);
+Node& findNode(int x, int y);
+Node& findNode(std::pair<int, int> pos);
 
 private:
-  std::vector<Node*> m_graph;
+  //std::vector<Node*> m_graph;
+  std::map< std::pair<int, int>, Node> m_graph;
   int m_nombreLigne;
   int m_nombreColonne;
 };
