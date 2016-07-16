@@ -25,13 +25,6 @@ int main(int argc, char **argv) {
 
     graph.afficherGraph();
     path.findPath();
-    /*path.addListeFermee(std::pair<int, int >(3,2));
-    std::cout<< path.inListeFermee(std::pair<int, int >(2,2)) << "," << path.inListeFermee(std::pair<int, int >(2,3)) << std::endl;
-    
-    std::cout << graph.findNode(1,1).getChar() << ",";
-    std::cout << " Pos: " << graph.getNodePosition(1,1).first << "," << graph.getNodePosition(1,1).second << std::endl;
-  */  
-
    
    
     return 0;
