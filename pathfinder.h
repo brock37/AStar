@@ -15,6 +15,7 @@
 class PathFinder
 {
 public:
+PathFinder();
 PathFinder(Graph* graph, std::pair<int, int> depart, std::pair<int, int> arrive);
 PathFinder(const PathFinder& other);
 ~PathFinder();
@@ -38,6 +39,9 @@ std::list< std::pair<int, int> > retouverChemin();
 
 void listerNode(std::list< std::pair<int, int> > liste);
 
+void setStartNode(std::pair<int, int> depart){m_nodeDepart= depart;};
+void setEndNode(std::pair<int, int> arrive){m_nodeArrive= arrive;};
+void setGraph( Graph* graph){m_graph= graph;};
 
 private:
   std::map< std::pair<int, int>, Node> m_listeOuverte;
